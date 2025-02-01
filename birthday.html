@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #ffccff; /* Pink background */
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .message {
+            font-size: 30px;
+            color: black;
+            font-weight: bold;
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+        }
+
+        .countdown {
+            font-size: 40px;
+            font-weight: bold;
+            color: black;
+            margin-top: 20px;
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+        }
+
+        .final-message {
+            font-size: 30px;
+            color: black;
+            font-weight: bold;
+            margin-top: 20px;
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+            display: none;
+        }
+
+        /* Keyframes for the fade-in effect */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Animation for flashing "Can't Wait" */
+        @keyframes flashText {
+            0% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .flash-message {
+            animation: flashText 2s ease-in-out forwards;
+        }
+
+        .soontxt {
+            font-size: 40px;
+            font-weight: bold;
+            color: black;
+            margin-top: 50px;
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+        }
+
+        .aftercountdown {
+            font-size: 30px;
+            color: black;
+            font-weight: bold;
+            margin-top: 50px;
+            opacity: 0;
+            animation: fadeIn 2s forwards;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="message" id="flashMessage">HEY BESTII...😍😍</div>
+<div class="soontxt" id="soonText">SOON......</div>
+<div class="countdown" id="countdown"></div>
+<div class="final-message" id="finalMessage">CAN'T WAIT...😍😍😍</div>
+<div class="aftercountdown" id="afterCountdownMessage"></div>
+
+<script>
+    // Target date for countdown (you can adjust it as needed)
+    const targetDate = new Date("March 1, 2025 00:00:00").getTime();
+
+    // Flash message for "HEY BESTII...😍😍"
+    setTimeout(() => {
+        document.getElementById("flashMessage").style.display = "none";
+        document.getElementById("soonText").style.display = "none";
+    }, 2000);  // Hide after 2 seconds
+
+    // Countdown function
+    let countdownInterval;
+    function startCountdown() {
+        countdownInterval = setInterval(function() {
+            const now = new Date().getTime();
+            const timeLeft = targetDate - now;
+
+            // Calculate time left in days, hours, minutes, seconds, and microseconds
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            const microseconds = Math.floor(timeLeft % 1000);  // Remaining milliseconds
+
+            // Display the countdown
+            document.getElementById("countdown").innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s ${microseconds}ms`;
+
+            // Flash "CAN'T WAIT..." message alongside countdown
+            document.getElementById("finalMessage").classList.add("flash-message");
+            document.getElementById("finalMessage").style.display = "block";
+
+            // When countdown reaches zero, stop and show final message
+            if (timeLeft < 0) {
+                clearInterval(countdownInterval);
+                document.getElementById("countdown").style.display = "none";  // Hide countdown
+                document.getElementById("finalMessage").style.display = "none";  // Hide "CAN'T WAIT..." after time
+                setTimeout(() => {
+                    // Show message after countdown for 1 hour
+                    document.getElementById("afterCountdownMessage").innerHTML = "ENJOY YOUR TIME! 😍😍😍";
+                    document.getElementById("afterCountdownMessage").style.display = "block";
+                }, 1000);
+            }
+        }, 10); // Update every 10ms to show microseconds
+    }
+
+    // Show "SOON..." for 2 seconds before countdown
+    setTimeout(() => {
+        document.getElementById("soonText").style.display = "block";  // Show soon message
+        setTimeout(startCountdown, 2000);  // Start countdown after "SOON..." message
+    }, 2000);
+
+</script>
+
+</body>
+</html>
